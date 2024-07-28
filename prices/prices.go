@@ -4,14 +4,14 @@ import (
 	"fmt"
 
 	"example.com/price-calculator/conversion"
-	"example.com/price-calculator/filemanager"
+	"example.com/price-calculator/iomanager"
 )
 
 type TaxIncludedPriceJob struct {
-	IOManager         filemanager.FileManager
-	TaxRate           float64
-	InputPrices       []float64
-	TaxIncludedPrices map[string]string
+	IOManager         iomanager.IOManager `json:"-"` // Ignore this field when marshalling
+	TaxRate           float64             `json:"tax_rate"`
+	InputPrices       []float64           `json:"input_prices"`
+	TaxIncludedPrices map[string]string   `json:"tax_included_prices"`
 }
 
 func (j *TaxIncludedPriceJob) LoadData() {
@@ -48,9 +48,9 @@ func (j *TaxIncludedPriceJob) Process() {
 }
 
 // NewTaxIncludedPriceJob creates a new TaxIncludedPriceJob
-func NewTaxIncludedPriceJob(fm filemanager.FileManager, taxRate float64) *TaxIncludedPriceJob {
+func NewTaxIncludedPriceJob(iom iomanager.IOManager, taxRate float64) *TaxIncludedPriceJob {
 	return &TaxIncludedPriceJob{
-		IOManager:   fm,
+		IOManager:   iom,
 		InputPrices: []float64{10, 20, 30},
 		TaxRate:     taxRate,
 	}
